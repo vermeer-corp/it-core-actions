@@ -1,0 +1,54 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      publish-project:
+        required: true
+        type: string
+      publish-path:
+        required: true
+        type: string
+      build-configuration:
+        required: false
+        type: string
+        default: "Release"
+      dotnet-version:
+        required: false
+        type: string
+        default: 6.0.x
+      upload-artifact:
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  build:
+    name: Build .NET
+    runs-on: [self-hosted, windows, x64]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ inputs.dotnet-version }}
+      - name: Configure Vermeer Package Source
+        run: |
+          if (!(dotnet nuget list source | ? { $_ -like "*https://nuget.vermeer.com/nuget"})) {
+            dotnet nuget add source --name "Vermeer" "https://nuget.vermeer.com/nuget"
+          }
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build -c ${{ inputs.build-configuration }} --no-restore
+      - name: Test
+        run: dotnet test -c ${{ inputs.build-configuration }} --no-build --verbosity normal
+      - name: Build Artifact Package
+        run: dotnet publish -c ${{ inputs.build-configuration }} --no-build "${{ inputs.publish-project }}"
+        if: ${{ success() && inputs.upload-artifact }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: publish-package
+          path: "${{ inputs.publish-path }}"
+        if: ${{ success() && inputs.upload-artifact }}

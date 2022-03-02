@@ -1,0 +1,35 @@
+name: Refresh Axway
+
+on:
+  workflow_call:
+    inputs:
+      deploy-environment:
+        required: true
+        type: string
+      axway-environment:
+        required: true
+        type: string
+      axway-api-name:
+        required: true
+        type: string
+      swagger-url:
+        required: true
+        type: string
+    secrets:
+      axway-username:
+        required: true
+      axway-password:
+        required: true
+      axway-org-id:
+        required: true
+
+jobs:
+  refresh:
+    name: Refresh Axway
+    runs-on: [self-hosted, windows, x64, msdeploy]
+    environment: ${{ inputs.deploy-environment }}
+    steps:
+      - name: Run Refresh PowerShell Script
+        shell: pwsh
+        run: |
+          & 'C:\buildScripts\AxwayAPIRefresh.ps1' -e ${{ inputs.axway-environment }} -n '${{ inputs.axway-api-name }}' -u ${{ secrets.axway-username }} -p ${{ secrets.axway-password }} -org ${{ secrets.axway-org-id }} -s ${{ inputs.swagger-url }} -apiPath 'C:\Program^ Files\Axway\APIM\scripts' -backupPath '${{ github.workspace }}\axway-backup'
