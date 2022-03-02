@@ -13,7 +13,7 @@ This workflow is used to build and test .NET Core projects.
 ```yaml
 jobs:
   build:
-    uses: vermeer-corp/it-core-actions/workflows/build-dotnet.yml@v1
+    uses: vermeer-corp/it-core-actions/.github/workflows/build-dotnet.yml@v1
     with:
       publish-project: <ProjectToPublish>.csproj
       publish-path: <ProjectToPublish>/bin/Debug/net6.0/publish/*
@@ -30,7 +30,7 @@ This workflow is used to refresh an API definition in Axway.
 
 ```yaml
 refresh-axway:
-  uses: vermeer-corp/it-core-actions/workflows/refresh-axway.yml@v1
+  uses: vermeer-corp/it-core-actions/.github/workflows/refresh-axway.yml@v1
   with:
     deploy-environment: development
     axway-environment: dev
