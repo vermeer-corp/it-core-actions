@@ -21,6 +21,9 @@ on:
         required: false
         type: boolean
         default: false
+    secrets:
+      github-token:
+        required: true
 
 jobs:
   build:
@@ -37,6 +40,12 @@ jobs:
           if (!(dotnet nuget list source | ? { $_ -like "*https://nuget.vermeer.com/nuget"})) {
             dotnet nuget add source --name "Vermeer" "https://nuget.vermeer.com/nuget"
           }
+      - name: Configure GitHub Package Source
+        run: |
+          if (dotnet nuget list source | ? { $_ -like "*https://nuget.pkg.github.com/vermeer-corp/*"}) {
+            dotnet nuget remove source "Vermeer GitHub"
+          }
+          dotnet nuget add source --username vermeer-corp --password ${{ secrets.github-token }} --store-password-in-clear-text --name "Vermeer GitHub" "https://nuget.pkg.github.com/vermeer-corp/index.json"
       - name: Restore dependencies
         run: dotnet restore
       - name: Build

@@ -1,0 +1,47 @@
+name: NuGet Package CI/CD
+
+on:
+  workflow_call:
+    inputs:
+      dotnet-version:
+        required: false
+        type: string
+        default: 6.0.x
+    secrets:
+      github-token:
+        required: true
+
+jobs:
+  build:
+    name: Build/Test/Publish
+    runs-on: [self-hosted, windows, x64]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{ inputs.dotnet-version }}
+      - name: Configure Vermeer Package Source
+        run: |
+          if (!(dotnet nuget list source | ? { $_ -like "*https://nuget.vermeer.com/nuget*"})) {
+            dotnet nuget add source --name "Vermeer" "https://nuget.vermeer.com/nuget"
+          }
+      - name: Configure GitHub Package Source
+        run: |
+          if (dotnet nuget list source | ? { $_ -like "*https://nuget.pkg.github.com/vermeer-corp/*"}) {
+            dotnet nuget remove source "Vermeer GitHub"
+          }
+          dotnet nuget add source --username vermeer-corp --password ${{ secrets.github-token }} --store-password-in-clear-text --name "Vermeer GitHub" "https://nuget.pkg.github.com/vermeer-corp/index.json"
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build -c Release --no-restore
+      - name: Test
+        run: dotnet test -c Release --no-build --verbosity normal
+      - name: Package NuGet
+        run: dotnet pack -c Release -o "${{ github.workspace }}\out" --no-build
+        if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && success() }}
+      - name: Publish NuGet to GitHub Packages
+        run: dotnet nuget push "${{ github.workspace }}\out\*.nupkg"  --api-key ${{ secrets.github-token }} --source "Vermeer GitHub"
+        if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && success() }}
