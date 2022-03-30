@@ -55,6 +55,7 @@ nuget:
   uses: vermeer-corp/it-core-actions/.github/workflows/dotnet-nuget-ci-cd.yml@v2
   with:
     dotnet-version: 6.0.x
+    publish-package: true
   secrets:
     github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
