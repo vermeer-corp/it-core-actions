@@ -1,0 +1,67 @@
+name: Build 
+ 
+on:
+  workflow_call:
+    inputs:
+      publish-project:
+        required: true
+        type: string
+      publish-path:
+        required: true
+        type: string
+      build-configuration:
+        required: false
+        type: string
+        default: "Release"
+      msbuild-args:
+        required: false
+        type: string
+        default: ""
+      test-file-glob:
+        required: false
+        type: string
+      upload-artifact:
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      github-token:
+        required: true        
+ 
+jobs:
+  build:
+    name: Build .NET Framework 
+    runs-on: [self-hosted, windows, x64]
+    steps:
+    - uses: actions/checkout@v2
+      name: Checkout Code     
+    - name: Setup MSBuild Path
+      uses: microsoft/setup-msbuild@v1.1  
+    - name: Setup VSTest Path
+      uses: darenm/Setup-VSTest@v1     
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.6
+      - name: Configure Vermeer Package Source
+        run: |
+          if (!(nuget sources list | ? { $_ -like "*https://nuget.vermeer.com/nuget"})) {
+            nuget sources add -Name "Vermeer" -Source "https://nuget.vermeer.com/nuget"
+          }
+      - name: Configure GitHub Package Source
+        run: |
+          if (nuget sources list | ? { $_ -like "*https://nuget.pkg.github.com/vermeer-corp/*"}) {
+            nuget sources remove -Name "Vermeer GitHub"
+          }
+          nuget sources add -Username vermeer-corp -Password ${{ secrets.github-token }} -StorePasswordInClearText -Name "Vermeer GitHub" -Source "https://nuget.pkg.github.com/vermeer-corp/index.json"
+    - name: Restore dependencies
+      run: nuget restore 
+    - name: Build and Package App
+      run: msbuild ${{ inputs.publish-project }} /p:Configuration=${{ inputs.build-configuration }} ${{ inputs.msbuild-args }}
+    - name: Test
+      run: vstest.console.exe ${{ inputs.test-file-glob }}
+      if: ${{ inputs.test-file-glob && inputs.test-file-glob != "" && success() }}
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: publish-package
+        path: "${{ inputs.publish-path }}"
+      if: ${{ success() && inputs.upload-artifact }}
