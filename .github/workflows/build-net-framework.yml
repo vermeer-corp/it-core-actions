@@ -58,7 +58,7 @@ jobs:
         run: msbuild ${{ inputs.publish-project }} /p:Configuration=${{ inputs.build-configuration }} ${{ inputs.msbuild-args }}
       - name: Test
         run: vstest.console.exe ${{ inputs.test-file-glob }}
-        if: ${{ inputs.test-file-glob && inputs.test-file-glob != "" && success() }}
+        if: ${{ inputs.test-file-glob && inputs.test-file-glob != '' && success() }}
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
