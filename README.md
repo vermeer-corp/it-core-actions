@@ -107,22 +107,21 @@ The GitHub Actions token to use to authenticate to the Vermeer GitHub Packages N
 
 ### Refresh Axway
 
-This workflow is used to refresh an API definition in Axway.
+This workflow is used to refresh an API definition in Axway. This workflow uses the [vermeer-corp/it-axway-automation@v1 action](https://github.com/vermeer-corp/it-axway-automation).
 
 #### Usage
 
 ```yaml
 refresh-axway:
-  uses: vermeer-corp/it-core-actions/.github/workflows/refresh-axway.yml@v1
+  uses: vermeer-corp/it-core-actions/.github/workflows/refresh-axway.yml@v4
   with:
     deploy-environment: development
-    axway-environment: dev
-    axway-api-name: <API Name> API
+    axway-frontend-path: /<api-name>
     swagger-url: https://devapi.vermeer.com/<api-name>/swagger/v1/swagger.json
   secrets:
+    axway-host: ${{ secrets.AXWAY_DEV_HOST }}
     axway-username: ${{ secrets.AXWAY_DEV_USERNAME }}
     axway-password: ${{ secrets.AXWAY_DEV_PASSWORD }}
-    axway-org-id: ${{ secrets.AXWAY_DEV_IT_DEVELOPERS_ORG_ID }}
 ```
 
 ---
