@@ -52,6 +52,14 @@ jobs:
             nuget sources remove -Name "Vermeer GitHub"
           }
           nuget sources add -Username vermeer-corp -Password ${{ secrets.github-token }} -StorePasswordInClearText -Name "Vermeer GitHub" -Source "https://nuget.pkg.github.com/vermeer-corp/index.json"
+      - name: Remove ACS NuGet Sources
+        run: |
+          if (nuget sources list | ? { $_ -like "*https://pkgs.dev.azure.com/vermeeracs/*"}) {
+            nuget sources remove -Name "OnMachine-Settings"
+          }
+          if (nuget sources list | ? { $_ -like "*https://dcinuget01.azurewebsites.net/nuget*"}) {
+            nuget sources remove -Name "DCI"
+          }
       - name: Restore dependencies
         run: nuget restore
       - name: Build
