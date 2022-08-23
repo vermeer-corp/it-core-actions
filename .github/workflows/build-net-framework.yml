@@ -55,10 +55,10 @@ jobs:
       - name: Remove ACS NuGet Sources
         run: |
           if (nuget sources list | ? { $_ -like "*https://pkgs.dev.azure.com/vermeeracs/*"}) {
-            nuget sources remove -Source https://pkgs.dev.azure.com/vermeeracs/33c8265b-5e33-4ffe-9d2c-788839b9897b/_packaging/OnMachine-Settings/nuget/v3/index.json
+            nuget sources remove -Name "OnMachine-Settings"
           }
           if (nuget sources list | ? { $_ -like "*https://dcinuget01.azurewebsites.net/nuget*"}) {
-            nuget sources remove -Source https://dcinuget01.azurewebsites.net/nuget
+            nuget sources remove -Name "DCI"
           }
       - name: Restore dependencies
         run: nuget restore
