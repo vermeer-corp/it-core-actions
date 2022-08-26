@@ -13,7 +13,7 @@ This workflow is used to build and test .NET Core/5/6 projects with the dotnet C
 ```yaml
 jobs:
   build:
-    uses: vermeer-corp/it-core-actions/.github/workflows/build-dotnet.yml@v2
+    uses: vermeer-corp/it-core-actions/.github/workflows/build-dotnet.yml@v5
     with:
       publish-project: <ProjectToPublish>.csproj
       publish-path: <ProjectToPublish>/bin/Debug/net6.0/publish/*
@@ -61,7 +61,7 @@ This workflow is used to build and test .NET Framework 4.x projects with MSBuild
 ```yaml
 jobs:
   build:
-    uses: vermeer-corp/it-core-actions/.github/workflows/build-net-framework.yml@v3
+    uses: vermeer-corp/it-core-actions/.github/workflows/build-net-framework.yml@v5
     with:
       publish-project: <ProjectToPublish>.csproj
       publish-path: <ProjectToPublish>/bin/Debug/net6.0/publish/*
@@ -113,7 +113,7 @@ This workflow is used to refresh an API definition in Axway. This workflow uses 
 
 ```yaml
 refresh-axway:
-  uses: vermeer-corp/it-core-actions/.github/workflows/refresh-axway.yml@v4
+  uses: vermeer-corp/it-core-actions/.github/workflows/refresh-axway.yml@v5
   with:
     deploy-environment: development
     axway-frontend-path: /<api-name>
@@ -134,7 +134,7 @@ This workflow is used to build, test, and publish all NuGet packages in a .NET C
 
 ```yaml
 nuget:
-  uses: vermeer-corp/it-core-actions/.github/workflows/dotnet-nuget-ci-cd.yml@v2
+  uses: vermeer-corp/it-core-actions/.github/workflows/dotnet-nuget-ci-cd.yml@v5
   with:
     dotnet-version: 6.0.x
     publish-package: true
@@ -152,7 +152,7 @@ This workflow is used to build, test, and publish NuGet packages in a .NET Frame
 
 ```yaml
 nuget:
-  uses: vermeer-corp/it-core-actions/.github/workflows/net-framework-nuget-ci-cd.yml@v2
+  uses: vermeer-corp/it-core-actions/.github/workflows/net-framework-nuget-ci-cd.yml@v5
   with:
     build-project: <PublishProject>.csproj
     nuget-project: <PublishProject>.nuspec or <PublishProject>.csproj
