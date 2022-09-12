@@ -1,0 +1,31 @@
+name: GitLeaks Secret Scan
+
+# It's recommended to leave the triggers like this
+# to reduce workflows running on all branches. To
+# catch commited secrets sooner, please install a
+# pre-commit hook as shown at:
+# https://github.com/zricethezav/gitleaks#pre-commit
+on:
+  push:
+    branches:
+      - $default-branch
+  pull_request:
+    branches:
+      - $default-branch
+  workflow_dispatch:
+
+jobs:
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v1
+
+      - name: Use Vermeer Definitions # forked from official repo with exceptions for false positives
+        run: mkdir security && wget -P security/ https://raw.githubusercontent.com/vermeer-corp/gitleaks/master/config/gitleaks.toml
+
+      - name: Run GitLeaks Scan
+        id: gitleaks
+        uses: DariuszPorowski/github-action-gitleaks@v2
+        with:
+          config: security/gitleaks.toml
