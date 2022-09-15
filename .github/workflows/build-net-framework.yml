@@ -31,7 +31,7 @@ on:
 jobs:
   build:
     name: Build .NET Framework
-    runs-on: [self-hosted, windows, x64]
+    runs-on: [self-hosted, windows, x64, pella, msbuild]
     steps:
       - uses: actions/checkout@v2
         name: Checkout Code
