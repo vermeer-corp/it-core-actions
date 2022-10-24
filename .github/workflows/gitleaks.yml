@@ -8,21 +8,23 @@ name: GitLeaks Secret Scan
 on:
   push:
     branches:
-      - $default-branch
+      - main
   pull_request:
     branches:
-      - $default-branch
+      - main
   workflow_dispatch:
 
 jobs:
   gitleaks:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v1
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: "0"
 
       - name: Use Vermeer Definitions # forked from official repo with exceptions for false positives
-        run: mkdir security && wget -P security/ https://raw.githubusercontent.com/vermeer-corp/gitleaks/master/config/gitleaks.toml
+        run: mkdir security; wget -P security/ https://raw.githubusercontent.com/vermeer-corp/gitleaks/master/config/gitleaks.toml
 
       - name: Run GitLeaks Scan
         id: gitleaks
