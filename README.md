@@ -20,6 +20,7 @@ jobs:
       build-configuration: Debug
       dotnet-version: 6.0.x
       upload-artifact: true
+      upload-artifact-name: artifact-name
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN}}
 ```
@@ -46,6 +47,10 @@ The version of the dotnet SDK to use when building the project.
 
 A boolean value indicating whether to upload the build artifact to GitHub.
 
+##### upload-artifact-name
+
+A name given for the artifact output for the build. Default is `publish-package`
+
 ##### github-token
 
 The GitHub Actions token to use to authenticate to the Vermeer GitHub Packages NuGet repository. This should always be set to `${{ secrets.GITHUB_TOKEN}}` in the calling workflow as shown above.
@@ -69,6 +74,7 @@ jobs:
       msbuild-args: /t:Package /t:TransformWebConfig /p:ExcludeXmlAssemblyFiles=false /p:AutoParameterizationWebConfigConnectionStrings=False
       test-file-glob: "**/*.Test.dll"
       upload-artifact: true
+      upload-artifact-name: artifact-name
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN}}
 ```
@@ -98,6 +104,10 @@ A glob pattern to match compiled MSTest DLL assemblies to run unit tests. If the
 ##### upload-artifact
 
 A boolean value indicating whether to upload the build artifact to GitHub.
+
+##### upload-artifact-name
+
+A name given for the artifact output for the build. Default is `publish-package`
 
 ##### github-token
 
