@@ -1,0 +1,26 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata: 
+  name: it-core-actions
+  title: it-core-actions
+  description: Initial description for it-core-actions
+  annotations:
+    github.com/project-slug: vermeer-corp/it-core-actions
+    #jira/project-key: ''
+    #jira/component: ''
+    #dynatrace.com/dynatrace-entity-id: ''
+    #dynatrace.com/synthetic-ids: ''
+    #backstage.io/techdocs-ref: dir:.
+    #backstage.io/adr-location: docs/adrs
+  tags:
+    
+  #links:
+    #- url: https://app.vermeer.com/
+    #  title: Link title to display
+spec:
+  type: website
+  owner: it-development_team-admin
+  lifecycle: production
+  dependsOn:
+    
+  
