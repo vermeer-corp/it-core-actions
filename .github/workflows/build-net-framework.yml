@@ -37,7 +37,7 @@ jobs:
     name: Build .NET Framework
     runs-on: [self-hosted, windows, x64, pella, msbuild]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         name: Checkout Code
       - name: Setup MSBuild Path
         uses: microsoft/setup-msbuild@v1.1
@@ -72,7 +72,7 @@ jobs:
       #   run: vstest.console.exe ${{ inputs.test-file-glob }}
       #   if: ${{ inputs.test-file-glob && inputs.test-file-glob != '' && success() }}
       - name: Upload Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: "${{ inputs.upload-artifact-name }}"
           path: "${{ inputs.publish-path }}"
