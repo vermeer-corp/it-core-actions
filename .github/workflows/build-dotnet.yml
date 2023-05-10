@@ -34,9 +34,9 @@ jobs:
     name: Build .NET
     runs-on: [self-hosted, windows, x64, pella, msbuild]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ inputs.dotnet-version }}
       - name: Configure Vermeer Package Source
@@ -68,7 +68,7 @@ jobs:
         run: dotnet publish -c ${{ inputs.build-configuration }} --no-build "${{ inputs.publish-project }}"
         if: ${{ success() && inputs.upload-artifact }}
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: "${{ inputs.upload-artifact-name }}"
           path: "${{ inputs.publish-path }}"
