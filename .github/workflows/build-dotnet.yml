@@ -68,8 +68,9 @@ jobs:
         run: dotnet publish -c ${{ inputs.build-configuration }} --no-build "${{ inputs.publish-project }}"
         if: ${{ success() && inputs.upload-artifact }}
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: "${{ inputs.upload-artifact-name }}"
           path: "${{ inputs.publish-path }}"
+          include-hidden-files: 'true'
         if: ${{ success() && inputs.upload-artifact }}

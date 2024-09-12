@@ -72,8 +72,9 @@ jobs:
       #   run: vstest.console.exe ${{ inputs.test-file-glob }}
       #   if: ${{ inputs.test-file-glob && inputs.test-file-glob != '' && success() }}
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: "${{ inputs.upload-artifact-name }}"
           path: "${{ inputs.publish-path }}"
+          include-hidden-files: 'true'
         if: ${{ success() && inputs.upload-artifact }}
