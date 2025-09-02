@@ -34,7 +34,7 @@ jobs:
     name: Build .NET
     runs-on: [self-hosted, windows, x64, pella, msbuild]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -72,5 +72,5 @@ jobs:
         with:
           name: "${{ inputs.upload-artifact-name }}"
           path: "${{ inputs.publish-path }}"
-          include-hidden-files: 'true'
+          include-hidden-files: "true"
         if: ${{ success() && inputs.upload-artifact }}

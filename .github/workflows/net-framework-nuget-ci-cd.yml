@@ -34,7 +34,7 @@ jobs:
     runs-on: [self-hosted, windows, x64, pella, msbuild]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Setup MSBuild Path
         uses: microsoft/setup-msbuild@v2
       - name: Setup NuGet
