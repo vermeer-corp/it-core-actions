@@ -37,21 +37,18 @@ jobs:
     name: Build .NET Framework
     runs-on: [self-hosted, windows, x64, pella, msbuild]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         name: Checkout Code
       - name: Setup MSBuild Path
         uses: microsoft/setup-msbuild@v2
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v2
-      # - name: Setup VSTest.console.exe
-      #   uses: darenm/Setup-VSTest@v1
-      - name: Configure Vermeer Package Source
-        run: |
-          if (!(nuget sources list | ? { $_ -like "*https://nuget.vermeer.com/nuget"})) {
-            nuget sources add -Name "Vermeer" -Source "https://nuget.vermeer.com/nuget"
-          }
+
       - name: Configure GitHub Package Source
         run: |
+          if (!(dotnet nuget list source | ? { $_ -like "*https://nuget.vermeer.com/nuget"})) {
+            dotnet nuget remove source "Vermeer"
+          }
           if (nuget sources list | ? { $_ -like "*https://nuget.pkg.github.com/vermeer-corp/*"}) {
             nuget sources remove -Name "Vermeer GitHub"
           }
