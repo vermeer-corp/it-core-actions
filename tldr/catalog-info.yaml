@@ -12,7 +12,7 @@ metadata:
     #dynatrace.com/synthetic-ids: ''
     #backstage.io/techdocs-ref: dir:.
     #backstage.io/adr-location: docs/adrs
-  tags:
+  # tags:
     
   #links:
     #- url: https://app.vermeer.com/
@@ -21,6 +21,6 @@ spec:
   type: website
   owner: it-development_team-admin
   lifecycle: production
-  dependsOn:
+  # dependsOn:
     
   
