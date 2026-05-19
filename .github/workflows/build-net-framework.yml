@@ -42,7 +42,7 @@ jobs:
       - name: Setup MSBuild Path
         uses: microsoft/setup-msbuild@v2
       - name: Setup NuGet
-        uses: NuGet/setup-nuget@v2
+        uses: NuGet/setup-nuget@12c57947e9458a5b976961b08ea0706a17dd71ae # v3
 
       - name: Configure GitHub Package Source
         run: |
