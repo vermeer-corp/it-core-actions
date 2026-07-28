@@ -35,3 +35,14 @@ jobs:
           api-deploy-config: false
           api-frontend-path: ${{ inputs.axway-frontend-path }}
           api-definition-path: ${{ inputs.swagger-url }}
+
+      - name: Deploy to Gravitee
+        uses: vermeer-corp/pt-deploy-api@v1
+        with:
+          name: TODO-FILL-ME
+          frontend-path: ${{ inputs.axway-frontend-path }}
+          api-definition-path: ${{ inputs.swagger-url }}
+          frontend-authentication-type: TODO-FILL-ME
+          backend-basepath: TODO-FILL-ME
+          owner: it-development_team-admin
+          environment: TODO-FILL-ME
